@@ -274,10 +274,14 @@ public class SceneController {
             size += dfs(grid, visited, x - 1, y);
         }
 
-        size += dfs(grid, visited, x + 1, y + 1);
-        size += dfs(grid, visited, x + 1, y - 1);
-        size += dfs(grid, visited, x - 1, y + 1);
-        size += dfs(grid, visited, x - 1, y - 1);
+        int xxyy = dfs(grid, visited, x + 1, y + 1);
+        int xxy = dfs(grid, visited, x + 1, y - 1);
+        int xyy = dfs(grid, visited, x - 1, y + 1);
+        int xy = dfs(grid, visited, x - 1, y - 1);
+
+        if (xxyy + xxy + xyy + xy > 1) {
+            return 5;
+        }
 
         return size;
     }
