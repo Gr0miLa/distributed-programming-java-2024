@@ -151,7 +151,7 @@ public class SceneController {
             gameClient.sendShipStageMessage(x, y);
         } else {
             Rectangle cell = (Rectangle) opponentPaneGrid.getChildren().get((x + 1) * (FIELD_SIZE + 1) + (y + 1));
-            if (cell.getFill() == Color.valueOf("#ffffff")) {
+            if (cell.getFill().equals(Color.valueOf("#ffffff"))) {
                 gameClient.sendShotMessage(x, y);
             }
         }
