@@ -10,6 +10,7 @@ public class GameClient {
     private DataInputStream input;
     private DataOutputStream output;
     private SceneController sceneController;
+    private boolean connected = true;
 
     public GameClient(SceneController sceneController) {
         this.sceneController = sceneController;
@@ -27,7 +28,7 @@ public class GameClient {
 
             new Thread(() -> {
                 try {
-                    while (true) {
+                    while (connected) {
                         String message = input.readUTF();
                         handleMessage(message);
                     }
@@ -127,6 +128,7 @@ public class GameClient {
     }
 
     public void closeConnection() {
+        connected = false;
         try {
             input.close();
             output.close();

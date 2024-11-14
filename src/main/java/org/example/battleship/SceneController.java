@@ -150,7 +150,10 @@ public class SceneController {
         if (isMyField) {
             gameClient.sendShipStageMessage(x, y);
         } else {
-            gameClient.sendShotMessage(x, y);
+            Rectangle cell = (Rectangle) opponentPaneGrid.getChildren().get((x + 1) * (FIELD_SIZE + 1) + (y + 1));
+            if (cell.getFill() == Color.valueOf("#ffffff")) {
+                gameClient.sendShotMessage(x, y);
+            }
         }
     }
 
@@ -296,4 +299,7 @@ public class SceneController {
         });
     }
 
+    public void handleCloseRequest() {
+        gameClient.closeConnection();
+    }
 }

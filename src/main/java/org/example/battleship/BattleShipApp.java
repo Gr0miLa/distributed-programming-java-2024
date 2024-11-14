@@ -15,6 +15,12 @@ public class BattleShipApp extends Application {
             Scene scene = new Scene(fxmlLoader.load());
             stage.setTitle("Battle Ship");
             stage.setScene(scene);
+
+            stage.setOnCloseRequest(event -> {
+                SceneController sceneController = fxmlLoader.getController();
+                sceneController.handleCloseRequest();
+            });
+
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();

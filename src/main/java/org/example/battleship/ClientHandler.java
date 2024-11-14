@@ -88,16 +88,19 @@ public class ClientHandler implements Runnable {
     private void handleEndGame(String[] parts, DataOutputStream out, DataOutputStream otherOut) {
         boolean win = Boolean.parseBoolean(parts[1]);
 
-        currentPlayer.setTurn(true);
-        opponentPlayer.setTurn(false);
-        currentPlayer.setReady(false);
-        opponentPlayer.setReady(false);
+        if (out != null) {
+            currentPlayer.setTurn(true);
+            currentPlayer.setReady(false);
+            currentPlayer.clearData();
+            sendMessage("END " + win, out);
+        }
+        if (otherOut != null) {
+            opponentPlayer.setTurn(false);
+            opponentPlayer.setReady(false);
+            opponentPlayer.clearData();
+            opponentHandler.sendMessage("END " + !win, otherOut);
+        }
 
-        currentPlayer.clearData();
-        opponentPlayer.clearData();
-
-        sendMessage("END " + win, out);
-        opponentHandler.sendMessage("END " + !win, otherOut);
     }
 
     private void handleConnect(DataOutputStream out, DataOutputStream otherOut) {
