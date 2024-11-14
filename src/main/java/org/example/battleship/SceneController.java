@@ -274,14 +274,12 @@ public class SceneController {
             size += dfs(grid, visited, x - 1, y);
         }
 
-        int xxyy = dfs(grid, visited, x + 1, y + 1);
-        int xxy = dfs(grid, visited, x + 1, y - 1);
-        int xyy = dfs(grid, visited, x - 1, y + 1);
-        int xy = dfs(grid, visited, x - 1, y - 1);
+        int xy = dfs(grid, visited, x + 1, y + 1);
+        int xxy_ = dfs(grid, visited, x + 1, y - 1);
+        int x_yy = dfs(grid, visited, x - 1, y + 1);
+        int x_y_ = dfs(grid, visited, x - 1, y - 1);
 
-        if (xxyy + xxy + xyy + xy > 1) {
-            return 5;
-        }
+        if (xy + xxy_ + x_yy + x_y_ > 0) return 5;
 
         return size;
     }
@@ -291,7 +289,6 @@ public class SceneController {
         int newY = y + dy;
         return newX >= 0 && newY >= 0 && newX < FIELD_SIZE && newY < FIELD_SIZE && grid[newX][newY] == 1;
     }
-
 
     private void showAlert(String title, String message) {
         Platform.runLater(() -> {
