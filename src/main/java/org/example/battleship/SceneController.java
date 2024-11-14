@@ -60,6 +60,10 @@ public class SceneController {
             startButton.setText("Готов");
             startButton.setDisable(true);
         } else if (Objects.equals(startButton.getText(), "Готов")) {
+            if (!isValidShipPlacement()) {
+                showAlert("Ошибка", "Неверная расстановка кораблей. Проверьте расположение и количество.");
+                return;
+            }
             playerField.setDisable(true);
             gameClient.sendReadyMessage();
             startButton.setText("Сдаться");
@@ -72,6 +76,7 @@ public class SceneController {
         Platform.runLater(() -> {
             playerField.setDisable(true);
             opponentField.setDisable(true);
+            startButton.setDisable(false);
 
             countShips = 0;
             numberShipsHit = 0;
@@ -80,11 +85,7 @@ public class SceneController {
             startButton.setText("Начать игру");
 
             String contentText = win ? "Поздравляем! Вы победили!" : "Поздравляем! Вы проиграли!";
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Игра завершена");
-            alert.setHeaderText(null);
-            alert.setContentText(contentText);
-            alert.showAndWait();
+            showAlert("Игра завершена", contentText);
         });
     }
 
@@ -96,7 +97,7 @@ public class SceneController {
         opponentField.setDisable(disabled);
     }
 
-    public static GridPane createField(boolean isMyField) {
+    private static GridPane createField(boolean isMyField) {
         GridPane grid = new GridPane();
         grid.setStyle("-fx-border-width: 0;");
         grid.setPrefSize(440, 440);
@@ -205,7 +206,7 @@ public class SceneController {
         isTurn = turn;
     }
 
-    public static void initializeField(Pane pane, boolean isMyField) {
+    private static void initializeField(Pane pane, boolean isMyField) {
         GridPane field = createField(isMyField);
         pane.getChildren().clear();
         pane.getChildren().add(field);
@@ -215,4 +216,84 @@ public class SceneController {
             opponentPaneGrid = field;
         }
     }
+
+    private boolean isValidShipPlacement() {
+        int[][] grid = new int[FIELD_SIZE][FIELD_SIZE];
+        for (int x = 0; x < FIELD_SIZE; x++) {
+            for (int y = 0; y < FIELD_SIZE; y++) {
+                Rectangle cell = (Rectangle) playerPaneGrid.getChildren().get((x + 1) * (FIELD_SIZE + 1) + (y + 1));
+                if (cell.getFill().equals(Color.valueOf("#3f72af"))) {
+                    grid[x][y] = 1;
+                } else {
+                    grid[x][y] = 0;
+                }
+            }
+        }
+
+        int[] shipCount = new int[5];
+
+        boolean[][] visited = new boolean[FIELD_SIZE][FIELD_SIZE];
+
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            for (int j = 0; j < FIELD_SIZE; j++) {
+                if (grid[i][j] == 1 && !visited[i][j]) {
+                    int size = dfs(grid, visited, i, j);
+                    if (size > 4) return false;
+                    shipCount[size]++;
+                }
+            }
+        }
+
+        return shipCount[1] == 4 && shipCount[2] == 3 && shipCount[3] == 2 && shipCount[4] == 1;
+    }
+
+    private int dfs(int[][] grid, boolean[][] visited, int x, int y) {
+        if (x < 0 || y < 0 || x >= FIELD_SIZE || y >= FIELD_SIZE) return 0;
+        if (visited[x][y] || grid[x][y] == 0) return 0;
+
+        visited[x][y] = true;
+        int size = 1;
+
+        boolean isHorizontal = checkDirection(grid, x, y, 0, 1) || checkDirection(grid, x, y, 0, -1);
+        boolean isVertical = checkDirection(grid, x, y, 1, 0) || checkDirection(grid, x, y, -1, 0);
+
+        if (isHorizontal && isVertical) {
+            return 0;
+        }
+
+        if (isHorizontal) {
+            size += dfs(grid, visited, x, y + 1);
+            size += dfs(grid, visited, x, y - 1);
+        }
+
+        if (isVertical) {
+            size += dfs(grid, visited, x + 1, y);
+            size += dfs(grid, visited, x - 1, y);
+        }
+
+        size += dfs(grid, visited, x + 1, y + 1);
+        size += dfs(grid, visited, x + 1, y - 1);
+        size += dfs(grid, visited, x - 1, y + 1);
+        size += dfs(grid, visited, x - 1, y - 1);
+
+        return size;
+    }
+
+    private boolean checkDirection(int[][] grid, int x, int y, int dx, int dy) {
+        int newX = x + dx;
+        int newY = y + dy;
+        return newX >= 0 && newY >= 0 && newX < FIELD_SIZE && newY < FIELD_SIZE && grid[newX][newY] == 1;
+    }
+
+
+    private void showAlert(String title, String message) {
+        Platform.runLater(() -> {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle(title);
+            alert.setHeaderText(null);
+            alert.setContentText(message);
+            alert.showAndWait();
+        });
+    }
+
 }

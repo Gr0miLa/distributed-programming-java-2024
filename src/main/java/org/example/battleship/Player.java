@@ -14,10 +14,6 @@ public class Player {
         this.isReady = isReady;
     }
 
-    public int[][] getPlayerGrid() {
-        return playerGrid;
-    }
-
     public void decrementShips() {
         countShips--;
     }

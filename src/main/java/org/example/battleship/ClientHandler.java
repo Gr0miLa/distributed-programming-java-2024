@@ -131,7 +131,6 @@ public class ClientHandler implements Runnable {
             currentPlayer.setTurn(false);
             sendMessage("MISS " + x + " " + y + " " + true, out);
             opponentHandler.sendMessage("MISS " + x + " " + y + " " + false, otherOut);
-            // opponentHandler.sendMessage("YOUR_TURN", otherOut);
             System.out.println("Смена хода");
         }
 
