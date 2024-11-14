@@ -47,14 +47,14 @@ public class ClientHandler implements Runnable {
             }
 
         } catch (IOException e) {
-            e.printStackTrace();
+            System.out.println("Клиент отключился");
         } finally {
             try {
                 if (in != null) in.close();
                 if (out != null) out.close();
                 if (clientSocket != null) clientSocket.close();
             } catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Сервер выключен");
             }
         }
     }

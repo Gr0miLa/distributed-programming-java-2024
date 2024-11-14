@@ -33,7 +33,7 @@ public class GameClient {
                         handleMessage(message);
                     }
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    System.out.println("Отключение клиента");
                 } finally {
                     closeConnection();
                 }
