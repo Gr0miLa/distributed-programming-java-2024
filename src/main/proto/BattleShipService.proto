@@ -1,0 +1,69 @@
+syntax = "proto3";
+package grpc.BattleShipService;
+option java_multiple_files = true;
+option java_package = "grpc.BattleShipService";
+option java_outer_classname = "BattleShipServiceProto";
+
+message ConnectRequest {}
+
+message ConnectResponse {
+    string clientId = 1;
+    string message = 2;
+    bool isTurn = 3;
+    ShotResponse shot = 4;
+    EndGameResponse end = 5;
+}
+
+message ReadyRequest {
+    string clientId = 1;
+}
+
+message ReadyResponse {
+    bool isTurn = 1;
+}
+
+message ShotRequest {
+    string clientId = 1;
+    int32 x = 2;
+    int32 y = 3;
+}
+
+message ShotResponse {
+    bool isMyField = 1;
+    int32 x = 2;
+    int32 y = 3;
+}
+
+message StageRequest {
+    string clientId = 1;
+    int32 x = 2;
+    int32 y = 3;
+}
+
+message StageResponse {
+    int32 placed = 1;
+}
+
+message EndGameRequest {
+    string clientId = 1;
+    bool win = 2;
+}
+
+message EndGameResponse {
+    bool win = 2;
+}
+
+message CloseStreamRequest {
+    string clientId = 1;
+}
+
+message CloseStreamResponse { }
+
+service BattleShipService {
+    rpc connectService(ConnectRequest) returns (stream ConnectResponse);
+    rpc readyService(ReadyRequest) returns (ReadyResponse);
+    rpc shotService(ShotRequest) returns (ShotResponse);
+    rpc stageService(StageRequest) returns (StageResponse);
+    rpc endGameService(EndGameRequest) returns (EndGameResponse);
+    rpc closeStreamService(CloseStreamRequest) returns (CloseStreamResponse);
+}

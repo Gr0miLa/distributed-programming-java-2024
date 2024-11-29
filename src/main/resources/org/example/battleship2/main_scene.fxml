@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="960.0" style="-fx-background-color: #f9f7f7;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.battleship2.SceneController">
+  <children>
+    <Pane layoutX="30.0" layoutY="30.0" prefHeight="460.0" prefWidth="900.0" style="-fx-background-color: #dbe2ef;">
+      <children>
+        <HBox alignment="CENTER" layoutX="10.0" layoutY="10.0" nodeOrientation="LEFT_TO_RIGHT">
+          <children>
+            <Pane fx:id="playerField" prefHeight="440.0" prefWidth="440.0" style="-fx-background-color: #f9f7f7;" />
+            <Pane fx:id="opponentField" prefHeight="440.0" prefWidth="440.0" style="-fx-background-color: #f9f7f7;" />
+          </children>
+        </HBox>
+      </children>
+    </Pane>
+
+    <VBox alignment="CENTER" layoutY="460.0" prefHeight="100.0" prefWidth="960.0">
+      <children>
+        <Button fx:id="startButton" mnemonicParsing="false" onAction="#onStartButtonClicked" style="-fx-background-color: #f9f7f7;" text="Начать игру">
+               <font>
+                  <Font size="14.0" />
+               </font></Button>
+      </children>
+    </VBox>
+  </children>
+</AnchorPane>
