@@ -25,7 +25,6 @@ public class GameClient {
             System.out.println("Соединение с сервером установлено!");
 
             sendConnectMessage();
-
             new Thread(() -> {
                 try {
                     while (connected) {

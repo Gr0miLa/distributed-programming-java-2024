@@ -29,8 +29,8 @@ public class SceneController {
 
     public static boolean isTurn = false;
 
-    public static int countShips = 0;
-    public static int numberShipsHit = 0;
+    public int countShips = 0;
+    public int numberShipsHit = 0;
 
     public static final int FIELD_SIZE = 10;
     public static final int SHIPS_COUNT = 20;
